@@ -9,18 +9,25 @@ public class HomeBase : ComponentBase
     [Inject]
     public required WorkScheduleHandler Handler { get; set; }
 
-    public WorkMember? Model { get; set; }
-
-    protected List<MemberWorkDay> Members { get; set; } = new();
+    [Inject]
+    public required TimeProvider TimeProvider { get; set; }
 
     protected int Year { get; set; } = 2023;
 
     protected int Month { get; set; } = 11;
 
+    public WorkMember? Model { get; set; }
+
+    protected List<MemberWorkDay> Members { get; set; } = new();
+
     protected List<WorkScheduleViewModel> Result { get; set; } = new();
 
     protected override Task OnInitializedAsync()
     {
+        var nextMonth = TimeProvider.GetLocalNow().AddDays(1);
+        Year = nextMonth.Year;
+        Month = nextMonth.Month;
+
         Model = new WorkMember();
         return base.OnInitializedAsync();
     }

@@ -15,7 +15,6 @@
 		<InputNumber @bind-Value="Month" class="form-control" />
 	</div>
 </div>
-<hr />
 
 <EditForm FormName="Form" Model="@Model" OnSubmit="@Add">
 	<div class=" row">
@@ -52,37 +51,27 @@
 			</tr>
 		}
 		</tbody>
+
 	</table>
 }
 
-<hr />
 <button class="btn btn-primary" @onclick="Submit">Generate</button>
 
+<hr />
 <div>
 	@if (Result.Any())
 	{
-		<table class="table table-striped">
-			<thead>
-			<tr>
-				<th>Day</th>
-				<th>First</th>
-				<th>Second</th>
-				<th>IsHoliday</th>
-			</tr>
-			</thead>
-			<tbody>
-			@foreach (var item in Result)
-			{
-				<tr>
-					<td>@($"{item.Date.Day}（{item.Date.DayOfWeek:G}）")</td>
-					<td>@item.First</td>
-					<td>@item.Second</td>
-					<td>@item.IsHoliday</td>
-				</tr>
-			}
-			</tbody>
-		</table>
+		<Calender Days="@Result" Month="@Month" Year="@Year"></Calender>
 		<hr />
+		<span>
+			@{ var avg1 = Result.Count(r => !r.IsHoliday) / Members.Count; }
+			平日平均: @avg1
+		</span>
+		<br />
+		<span>
+			@{ var avg2 = Result.Count(r => r.IsHoliday) / Members.Count; }
+			假日平均: @avg2
+		</span>
 		<table class="table table-striped">
 			<thead>
 			<th>Name</th>
