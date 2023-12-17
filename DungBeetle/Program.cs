@@ -1,5 +1,8 @@
+using DungBeetle.Applications.Common.Interfaces;
+using DungBeetle.Applications.WorkSchedule;
 using DungBeetle.Client.Pages;
 using DungBeetle.Components;
+using DungBeetle.Infra.Apis;
 
 namespace DungBeetle
 {
@@ -9,14 +12,16 @@ namespace DungBeetle
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            var app = builder.Build();
+            builder.Services.AddHttpClient();
+            builder.Services.AddSingleton(TimeProvider.System);
+            builder.Services.AddSingleton<IOpenApi, OpenApi>();
+            builder.Services.AddScoped<WorkScheduleHandler>();
 
-            // Configure the HTTP request pipeline.
+            var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
                 app.UseWebAssemblyDebugging();

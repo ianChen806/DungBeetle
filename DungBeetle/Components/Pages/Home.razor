@@ -1,7 +1,108 @@
 ﻿@page "/"
+@inherits HomeBase
+@attribute [StreamRendering]
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Home</h1>
 
-Welcome to your new app.
+<div class=" row">
+	<div class="input-group mb-3">
+		<span class="input-group-text">Year</span>
+		<InputNumber @bind-Value="Year" class="form-control" />
+		<span class="input-group-text">Month</span>
+		<InputNumber @bind-Value="Month" class="form-control" />
+	</div>
+</div>
+<hr />
+
+<EditForm FormName="Form" Model="@Model" OnSubmit="@Add">
+	<div class=" row">
+		<div class="input-group mb-3">
+			<span class="input-group-text">Name</span>
+			<InputText @bind-Value="Model!.Name" class="form-control" type="text" />
+
+			<span class="input-group-text">IgnoreDays</span>
+			<InputText @bind-Value="Model!.IgnoreDays" class="form-control" type="text" />
+
+			<button class="btn btn-outline-secondary" type="submit">Add</button>
+			<button class="btn btn-outline-secondary" @OnClick="CleanMembers">Clean</button>
+		</div>
+	</div>
+</EditForm>
+
+@if (Members.Any())
+{
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+			<th scope="col">IgnoreDays</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var member in Members)
+		{
+			<tr>
+				<th scope="row">@(Members.IndexOf(member) + 1)</th>
+				<td>@member.Name</td>
+				<td>@string.Join(", ", member.IgnoreDays.Select(r => r.Day))</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+<hr />
+<button class="btn btn-primary" @onclick="Submit">Generate</button>
+
+<div>
+	@if (Result.Any())
+	{
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th>Day</th>
+				<th>First</th>
+				<th>Second</th>
+				<th>IsHoliday</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var item in Result)
+			{
+				<tr>
+					<td>@($"{item.Date.Day}（{item.Date.DayOfWeek:G}）")</td>
+					<td>@item.First</td>
+					<td>@item.Second</td>
+					<td>@item.IsHoliday</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+		<hr />
+		<table class="table table-striped">
+			<thead>
+			<th>Name</th>
+			<th>主-平日</th>
+			<th>假日</th>
+			<th>副-平日</th>
+			<th>假日</th>
+			</thead>
+			<tbody>
+			@foreach (var member in Result.Select(r => r.First).Distinct())
+			{
+				<tr>
+					<td>@member</td>
+					<td>@Result.Count(r => r.First == member && !r.IsHoliday)</td>
+					<td>@Result.Count(r => r.First == member && r.IsHoliday)</td>
+					<td>@Result.Count(r => r.Second == member && !r.IsHoliday)</td>
+					<td>@Result.Count(r => r.Second == member && r.IsHoliday)</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	}
+</div>
