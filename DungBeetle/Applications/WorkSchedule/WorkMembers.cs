@@ -3,10 +3,10 @@ namespace DungBeetle.Applications.WorkSchedule;
 public class WorkMembers
 {
     private readonly Dictionary<string, WorkDayCount> _memberCounts;
-    private readonly List<MemberWorkDay> _members;
+    private readonly List<MemberInfo> _members;
     private readonly Random _random;
 
-    public WorkMembers(List<MemberWorkDay> members)
+    public WorkMembers(List<MemberInfo> members)
     {
         _members = members;
         _memberCounts = members.ToDictionary(r => r.Name, _ => new WorkDayCount());

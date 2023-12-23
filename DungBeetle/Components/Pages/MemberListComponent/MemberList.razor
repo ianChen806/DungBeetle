@@ -1,0 +1,49 @@
+﻿<h3>MemberInput</h3>
+@inherits MemberInputBase
+
+<EditForm FormName="Form" Model="@Member" OnSubmit="@Add">
+	<div class=" row">
+		<div class="input-group mb-3">
+			<span class="input-group-text">Name</span>
+			<input @bind="Member!.Name" class="form-control" id="@NameElementId" type="text" />
+
+			<span class="input-group-text">IgnoreDays</span>
+			<input @bind="Member!.IgnoreDays" class="form-control" type="text" />
+
+			<button class="btn btn-outline-secondary" type="submit">Add</button>
+			<button class="btn btn-outline-secondary" @onclick="Clean" type="button">Clean</button>
+		</div>
+	</div>
+</EditForm>
+
+@if (Members.Any())
+{
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+			<th scope="col">IgnoreDays</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var member in Members)
+		{
+			<tr>
+				<th scope="row">@(Members.IndexOf(member) + 1)</th>
+				<td>@member.Name</td>
+				<td>@string.Join(", ", member.IgnoreDays.Select(r => r))</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+<script>
+	function setFocusToElement(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.focus();
+        }
+    }
+</script>

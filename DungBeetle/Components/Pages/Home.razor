@@ -2,6 +2,7 @@
 @inherits HomeBase
 @attribute [StreamRendering]
 @rendermode InteractiveServer
+@using DungBeetle.Components.Pages.MemberListComponent
 
 <PageTitle>Home</PageTitle>
 
@@ -12,65 +13,26 @@
 		<span class="input-group-text">Year</span>
 		<InputNumber @bind-Value="Year" class="form-control" />
 		<span class="input-group-text">Month</span>
-		<InputNumber @bind-Value="Month" class="form-control" />
+		<InputNumber @bind-Value="Month" class="form-control" max="12" min="1" />
 	</div>
 </div>
 
-<EditForm FormName="Form" Model="@Model" OnSubmit="@Add">
-	<div class=" row">
-		<div class="input-group mb-3">
-			<span class="input-group-text">Name</span>
-			<InputText @bind-Value="Model!.Name" class="form-control" type="text" />
-
-			<span class="input-group-text">IgnoreDays</span>
-			<InputText @bind-Value="Model!.IgnoreDays" class="form-control" type="text" />
-
-			<button class="btn btn-outline-secondary" type="submit">Add</button>
-			<button class="btn btn-outline-secondary" @OnClick="CleanMembers">Clean</button>
-		</div>
-	</div>
-</EditForm>
-
-@if (Members.Any())
-{
-	<table class="table table-striped">
-		<thead>
-		<tr>
-			<th scope="col">#</th>
-			<th scope="col">Name</th>
-			<th scope="col">IgnoreDays</th>
-		</tr>
-		</thead>
-		<tbody>
-		@foreach (var member in Members)
-		{
-			<tr>
-				<th scope="row">@(Members.IndexOf(member) + 1)</th>
-				<td>@member.Name</td>
-				<td>@string.Join(", ", member.IgnoreDays.Select(r => r.Day))</td>
-			</tr>
-		}
-		</tbody>
-
-	</table>
-}
+<MemberList Members="Members"></MemberList>
 
 <button class="btn btn-primary" @onclick="Submit">Generate</button>
 
 <hr />
 <div>
-	@if (Result.Any())
+	@if (Model.Days.Any())
 	{
-		<Calender Days="@Result" Month="@Month" Year="@Year"></Calender>
+		<Calender Days="@Model.Days" Month="@Month" Year="@Year"></Calender>
 		<hr />
 		<span>
-			@{ var avg1 = Result.Count(r => !r.IsHoliday) / Members.Count; }
-			平日平均: @avg1
+			平日平均: @Model.WorkdayAvgDays
 		</span>
 		<br />
 		<span>
-			@{ var avg2 = Result.Count(r => r.IsHoliday) / Members.Count; }
-			假日平均: @avg2
+			假日平均: @Model.HolidayAvgDays
 		</span>
 		<table class="table table-striped">
 			<thead>
@@ -81,14 +43,14 @@
 			<th>假日</th>
 			</thead>
 			<tbody>
-			@foreach (var member in Result.Select(r => r.First).Distinct())
+			@foreach (var member in Model.Days.Select(r => r.First).Distinct())
 			{
 				<tr>
 					<td>@member</td>
-					<td>@Result.Count(r => r.First == member && !r.IsHoliday)</td>
-					<td>@Result.Count(r => r.First == member && r.IsHoliday)</td>
-					<td>@Result.Count(r => r.Second == member && !r.IsHoliday)</td>
-					<td>@Result.Count(r => r.Second == member && r.IsHoliday)</td>
+					<td>@Model.Days.Count(r => r.First == member && !r.IsHoliday)</td>
+					<td>@Model.Days.Count(r => r.First == member && r.IsHoliday)</td>
+					<td>@Model.Days.Count(r => r.Second == member && !r.IsHoliday)</td>
+					<td>@Model.Days.Count(r => r.Second == member && r.IsHoliday)</td>
 				</tr>
 			}
 			</tbody>
