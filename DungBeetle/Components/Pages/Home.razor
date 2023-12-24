@@ -5,6 +5,7 @@
 @using DungBeetle.Components.Pages.MemberListComponent
 @using DungBeetle.Components.Pages.CalenderComponent
 @using DungBeetle.Components.Pages.DaySummaryComponent
+@using DungBeetle.Components.Pages.DayListComponent
 
 <PageTitle>Home</PageTitle>
 
@@ -27,7 +28,7 @@
 	@if (Model.Days.Any())
 	{
 		<DaySummary Model="Model"></DaySummary>
-		<Calender DataChanged="Model.DataChanged" Days="Model.Days" Month="@Month" Year="@Year"></Calender>
+		<Calender Model="Model" Month="@Month" Year="@Year"></Calender>
 		<DayList Model="Model"></DayList>
 	}
 </div>

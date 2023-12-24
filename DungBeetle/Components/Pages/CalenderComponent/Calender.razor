@@ -29,15 +29,53 @@
 				{
 					<td style="text-align: left">
 						<span class="tdCol" style="text-align: center">@day</span>
-						<span class="tdCol"
-							@onclick="() => SelectDayFirst(workDay)"
-							style="background-color: @workDay.FirstColor">
-							1. @workDay.First
+						<span class="tdCol" style="background-color: @workDay.FirstColor; margin-bottom: 5px">
+							<div class="row">
+								<div class="col-6">
+									<span>1.</span>
+									<span @onclick="() => SelectDayFirst(workDay)">@workDay.First</span>
+									@if (string.IsNullOrWhiteSpace(workDay.First))
+									{
+										<select @onchange="r => SetName(r, workDay, 1)">
+											<option value=""></option>
+											@foreach (var name in Names)
+											{
+												<option value="@name">@name</option>
+											}
+										</select>
+									}
+								</div>
+								<div class="col-2">
+									<button class="btn btn-danger btn-sm" @onclick="() => Clean(workDay, 1)"
+										style="text-align: right">
+										x
+									</button>
+								</div>
+							</div>
 						</span>
-						<span class="tdCol"
-							@onclick="() => SelectDaySecond(workDay)"
-							style="background-color: @workDay.SecondColor">
-							2. @workDay.Second
+						<span class="tdCol" style="background-color: @workDay.SecondColor; margin-bottom: 5px">
+							<div class="row">
+								<div class="col-6">
+									<span>1.</span>
+									<span @onclick="() => SelectDaySecond(workDay)">@workDay.Second</span>
+									@if (string.IsNullOrWhiteSpace(workDay.Second))
+									{
+										<select @onchange="r => SetName(r, workDay, 2)">
+											<option value=""></option>
+											@foreach (var name in Names)
+											{
+												<option value="@name">@name</option>
+											}
+										</select>
+									}
+								</div>
+								<div class="col-2">
+									<button class="btn btn-danger btn-sm" @onclick="() => Clean(workDay, 2)"
+										style="text-align: right">
+										x
+									</button>
+								</div>
+							</div>
 						</span>
 					</td>
 					day++;

@@ -6,27 +6,30 @@ namespace DungBeetle.Components.Pages.CalenderComponent;
 public class CalenderBase : ComponentBase
 {
     [Parameter]
-    public List<WorkScheduleViewModel> Days { get; set; } = [];
-
-    [Parameter]
     public int Year { get; set; }
 
     [Parameter]
     public int Month { get; set; }
 
     [Parameter]
-    public Action? DataChanged { get; set; }
+    public WorkDayViewModel Model { get; set; } = new();
 
-    protected IEnumerable<IEnumerable<WorkScheduleViewModel>> Weeks()
+    public List<string> Names => Model.Members;
+
+    private List<WorkScheduleViewModel> Days => Model.Days;
+
+    private Action? DataChanged => Model.DataChanged;
+
+    protected void Clean(WorkScheduleViewModel workDay, int number)
     {
-        var firstWeek = (int) new DateTime(Year, Month, 1).DayOfWeek;
-        var empty = Enumerable
-            .Range(0, firstWeek)
-            .Select(_ => new WorkScheduleViewModel());
-        return empty.Concat(Days)
-            .Select((day, index) => new { Day = day, Index = index })
-            .GroupBy(r => r.Index / 7)
-            .Select(r => r.Select(x => x.Day));
+        if (number == 1)
+        {
+            workDay.First = "";
+        }
+        else
+        {
+            workDay.Second = "";
+        }
     }
 
     protected void SelectDayFirst(WorkScheduleViewModel day)
@@ -63,5 +66,30 @@ public class CalenderBase : ComponentBase
             second.IsSelectSecond = false;
             DataChanged?.Invoke();
         }
+    }
+
+    protected IEnumerable<IEnumerable<WorkScheduleViewModel>> Weeks()
+    {
+        var firstWeek = (int) new DateTime(Year, Month, 1).DayOfWeek;
+        var empty = Enumerable
+            .Range(0, firstWeek)
+            .Select(_ => new WorkScheduleViewModel());
+        return empty.Concat(Days)
+            .Select((day, index) => new { Day = day, Index = index })
+            .GroupBy(r => r.Index / 7)
+            .Select(r => r.Select(x => x.Day));
+    }
+
+    protected void SetName(ChangeEventArgs args, WorkScheduleViewModel day, int number)
+    {
+        if (number == 1)
+        {
+            day.First = args.Value!.ToString();
+        }
+        else
+        {
+            day.Second = args.Value!.ToString();
+        }
+        DataChanged?.Invoke();
     }
 }
