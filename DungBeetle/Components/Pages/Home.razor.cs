@@ -23,7 +23,7 @@ public class HomeBase : ComponentBase
 
     protected override Task OnInitializedAsync()
     {
-        var nextMonth = TimeProvider.GetLocalNow().AddDays(1);
+        var nextMonth = TimeProvider.GetLocalNow().AddMonths(1);
         Year = nextMonth.Year;
         Month = nextMonth.Month;
 
