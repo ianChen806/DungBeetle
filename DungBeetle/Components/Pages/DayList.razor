@@ -1,0 +1,42 @@
+﻿@using DungBeetle.Applications.WorkSchedule
+@implements IDisposable
+<table class="table table-striped">
+	<thead>
+	<tr>
+		<th>Day</th>
+		<th>Week</th>
+		<th>First</th>
+		<th>Second</th>
+		<th>IsHoliday</th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model.Days)
+	{
+		<tr>
+			<td>@item.Date.Day</td>
+			<td>@(item.Date.DayOfWeek.ToString("G"))</td>
+			<td>@item.First</td>
+			<td>@item.Second</td>
+			<td>@item.IsHoliday</td>
+		</tr>
+	}
+	</tbody>
+</table>
+
+@code {
+
+	[Parameter]
+	public WorkDayViewModel Model { get; set; } = new();
+
+	protected override void OnInitialized()
+	{
+		Model.OnDataChanged += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		Model.OnDataChanged -= StateHasChanged;
+	}
+
+}
