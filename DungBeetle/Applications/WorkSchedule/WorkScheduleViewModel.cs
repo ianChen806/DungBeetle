@@ -17,4 +17,6 @@ public class WorkScheduleViewModel
     public string FirstColor => IsSelectFirst ? "bisque" : "";
 
     public string SecondColor => IsSelectSecond ? "plum" : "";
+
+    public string DayColor => IsHoliday ? "#dfc2c4" : "";
 }

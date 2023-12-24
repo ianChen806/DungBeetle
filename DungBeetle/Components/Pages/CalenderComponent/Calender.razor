@@ -27,7 +27,7 @@
 				}
 				else
 				{
-					<td style="text-align: left">
+					<td style="text-align: left; background-color: @workDay.DayColor">
 						<span class="tdCol" style="text-align: center">@day</span>
 						<span class="tdCol" style="background-color: @workDay.FirstColor; margin-bottom: 5px">
 							<div class="row">
@@ -56,7 +56,7 @@
 						<span class="tdCol" style="background-color: @workDay.SecondColor; margin-bottom: 5px">
 							<div class="row">
 								<div class="col-6">
-									<span>1.</span>
+									<span>2.</span>
 									<span @onclick="() => SelectDaySecond(workDay)">@workDay.Second</span>
 									@if (string.IsNullOrWhiteSpace(workDay.Second))
 									{
