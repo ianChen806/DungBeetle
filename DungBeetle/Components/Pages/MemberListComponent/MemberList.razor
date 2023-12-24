@@ -34,7 +34,7 @@
 				<th scope="row">@(index++)</th>
 				<td>@member.Name</td>
 				<td>
-					<input class="form-control" type="text" />
+					<input @bind="member.IgnoreDays" class="form-control" type="text" />
 				</td>
 				<td>
 					<button class="btn btn-danger" @onclick="() => Delete(member)">Delete</button>

@@ -11,8 +11,8 @@
 
 <h1>Home</h1>
 
-<nav class="nav nav-tabs">
-	<a class="nav-item nav-link @ActiveClass(1)" @onclick="() => ShowPanel(1)">Input</a>
+<nav class="nav nav-tabs" style="margin-bottom: 10px">
+	<a class=" nav-item nav-link @ActiveClass(1)" @onclick="() => ShowPanel(1)">Input</a>
 	@if (Members.Any())
 	{
 		<a class="nav-item nav-link @ActiveClass(2)" @onclick="() => ShowPanel(2)">Calender</a>

@@ -32,9 +32,7 @@ public class MemberInputBase : ComponentBase
         Members.Add(new MemberInfoViewModel
         {
             Name = name,
-            IgnoreDays = Member.IgnoreDays?.Split(',')
-                .Select(int.Parse)
-                .ToList() ?? []
+            IgnoreDays = Member.IgnoreDays ?? string.Empty
         });
         Member = new WorkMember();
         FocusId = NameElementId;

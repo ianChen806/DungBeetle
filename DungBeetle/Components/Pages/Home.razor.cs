@@ -43,7 +43,11 @@ public class HomeBase : ComponentBase
             Members = Members.Select(r => new MemberInfo
             {
                 Name = r.Name,
-                IgnoreDays = r.IgnoreDays.Select(s => new DateTime(Year, Month, s)).ToList()
+                IgnoreDays = r.IgnoreDays.Split(',')
+                    .Where(s => string.IsNullOrWhiteSpace(s) == false)
+                    .Select(int.Parse)
+                    .Select(s => new DateTime(Year, Month, s))
+                    .ToList()
             }).ToList()
         });
         Model = result.ToViewModel(Members);

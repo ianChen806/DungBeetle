@@ -4,5 +4,5 @@ public class MemberInfoViewModel
 {
     public string Name { get; set; } = string.Empty;
 
-    public List<int> IgnoreDays { get; set; } = [];
+    public string IgnoreDays { get; set; } = string.Empty;
 }
