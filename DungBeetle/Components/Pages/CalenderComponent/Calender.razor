@@ -32,8 +32,7 @@
 						<span class="tdCol" style="background-color: @workDay.FirstColor; margin-bottom: 5px">
 							<div class="row">
 								<div class="col-6">
-									<span>1.</span>
-									<span @onclick="() => SelectDayFirst(workDay)">@workDay.First</span>
+									<span @onclick="() => SelectDayFirst(workDay)">1. @workDay.First</span>
 									@if (string.IsNullOrWhiteSpace(workDay.First))
 									{
 										<select @onchange="r => SetName(r, workDay, 1)">
@@ -56,8 +55,7 @@
 						<span class="tdCol" style="background-color: @workDay.SecondColor; margin-bottom: 5px">
 							<div class="row">
 								<div class="col-6">
-									<span>2.</span>
-									<span @onclick="() => SelectDaySecond(workDay)">@workDay.Second</span>
+									<span @onclick="() => SelectDaySecond(workDay)">2. @workDay.Second</span>
 									@if (string.IsNullOrWhiteSpace(workDay.Second))
 									{
 										<select @onchange="r => SetName(r, workDay, 2)">
