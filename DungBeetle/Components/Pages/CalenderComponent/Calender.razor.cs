@@ -1,7 +1,7 @@
 ﻿using DungBeetle.Applications.WorkSchedule;
 using Microsoft.AspNetCore.Components;
 
-namespace DungBeetle.Components.Pages;
+namespace DungBeetle.Components.Pages.CalenderComponent;
 
 public class CalenderBase : ComponentBase
 {

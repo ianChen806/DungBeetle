@@ -3,6 +3,7 @@
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @using DungBeetle.Components.Pages.MemberListComponent
+@using DungBeetle.Components.Pages.CalenderComponent
 
 <PageTitle>Home</PageTitle>
 
@@ -18,7 +19,6 @@
 </div>
 
 <MemberList Members="Members"></MemberList>
-
 <button class="btn btn-primary" @onclick="Submit">Generate</button>
 
 <hr />
@@ -43,7 +43,7 @@
 			<th>假日</th>
 			</thead>
 			<tbody>
-			@foreach (var member in Model.Days.Select(r => r.First).Distinct())
+			@foreach (var member in Model.Members)
 			{
 				<tr>
 					<td>@member</td>
