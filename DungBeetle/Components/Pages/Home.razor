@@ -4,6 +4,7 @@
 @rendermode InteractiveServer
 @using DungBeetle.Components.Pages.MemberListComponent
 @using DungBeetle.Components.Pages.CalenderComponent
+@using DungBeetle.Components.Pages.DaySummaryComponent
 
 <PageTitle>Home</PageTitle>
 
@@ -25,28 +26,7 @@
 <div>
 	@if (Model.Days.Any())
 	{
+		<DaySummary Model="Model"></DaySummary>
 		<Calender Days="@Model.Days" Month="@Month" Year="@Year"></Calender>
-		<hr />
-		<table class="table table-striped">
-			<thead>
-			<th>Name</th>
-			<th>主-平日(平均 @Model.WorkdayAvgDays)</th>
-			<th>假日(平均 @Model.HolidayAvgDays)</th>
-			<th>副-平日</th>
-			<th>假日</th>
-			</thead>
-			<tbody>
-			@foreach (var member in Model.Members)
-			{
-				<tr>
-					<td>@member</td>
-					<td>@Model.Days.Count(r => r.First == member && !r.IsHoliday)</td>
-					<td>@Model.Days.Count(r => r.First == member && r.IsHoliday)</td>
-					<td>@Model.Days.Count(r => r.Second == member && !r.IsHoliday)</td>
-					<td>@Model.Days.Count(r => r.Second == member && r.IsHoliday)</td>
-				</tr>
-			}
-			</tbody>
-		</table>
 	}
 </div>

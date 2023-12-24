@@ -1,0 +1,29 @@
+﻿@using DungBeetle.Applications.WorkSchedule
+<table class="table table-striped">
+	<thead>
+	<th>Name</th>
+	<th>主-平日(平均 @Model.WorkdayAvgDays)</th>
+	<th>假日(平均 @Model.HolidayAvgDays)</th>
+	<th>副-平日</th>
+	<th>假日</th>
+	</thead>
+	<tbody>
+	@foreach (var member in Model.Members)
+	{
+		<tr>
+			<td>@member</td>
+			<td>@Model.Days.Count(r => r.First == member && !r.IsHoliday)</td>
+			<td>@Model.Days.Count(r => r.First == member && r.IsHoliday)</td>
+			<td>@Model.Days.Count(r => r.Second == member && !r.IsHoliday)</td>
+			<td>@Model.Days.Count(r => r.Second == member && r.IsHoliday)</td>
+		</tr>
+	}
+	</tbody>
+</table>
+
+@code {
+
+	[Parameter]
+	public WorkDayViewModel Model { get; set; } = new();
+
+}

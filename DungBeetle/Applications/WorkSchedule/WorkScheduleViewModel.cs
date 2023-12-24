@@ -9,4 +9,12 @@ public class WorkScheduleViewModel
     public string? Second { get; set; }
 
     public bool IsHoliday { get; set; }
+
+    public bool IsSelectFirst { get; set; }
+
+    public bool IsSelectSecond { get; set; }
+
+    public string FirstColor => IsSelectFirst ? "bisque" : "";
+
+    public string SecondColor => IsSelectSecond ? "bisque" : "";
 }

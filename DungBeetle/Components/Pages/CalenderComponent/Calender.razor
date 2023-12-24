@@ -29,8 +29,16 @@
 				{
 					<td style="text-align: left">
 						<span class="tdCol" style="text-align: center">@day</span>
-						<span class="tdCol">1. @workDay.First</span>
-						<span class="tdCol">2. @workDay.Second</span>
+						<span class="tdCol"
+							@onclick="() => SelectDay(workDay, 1)"
+							style="background-color: @workDay.FirstColor">
+							1. @workDay.First
+						</span>
+						<span class="tdCol"
+							@onclick="() => SelectDay(workDay, 2)"
+							style="background-color: @workDay.SecondColor">
+							2. @workDay.Second
+						</span>
 					</td>
 					day++;
 				}
