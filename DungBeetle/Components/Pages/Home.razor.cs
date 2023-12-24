@@ -47,5 +47,18 @@ public class HomeBase : ComponentBase
             }).ToList()
         });
         Model = result.ToViewModel(Members);
+        ActivePanel = 2;
+    }
+
+    protected int ActivePanel { get; set; } = 1;
+
+    protected void ShowPanel(int panel)
+    {
+        ActivePanel = panel;
+    }
+
+    protected string ActiveClass(int panel)
+    {
+        return ActivePanel == panel ? "active" : "";
     }
 }

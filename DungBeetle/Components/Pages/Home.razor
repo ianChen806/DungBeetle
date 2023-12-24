@@ -11,24 +11,41 @@
 
 <h1>Home</h1>
 
-<div class=" row">
-	<div class="input-group mb-3">
-		<span class="input-group-text">Year</span>
-		<InputNumber @bind-Value="Year" class="form-control" />
-		<span class="input-group-text">Month</span>
-		<InputNumber @bind-Value="Month" class="form-control" max="12" min="1" />
-	</div>
-</div>
-
-<MemberList Members="Members"></MemberList>
-<button class="btn btn-primary" @onclick="Submit">Generate</button>
-
-<hr />
-<div>
-	@if (Model.Days.Any())
+<nav class="nav nav-tabs">
+	<a class="nav-item nav-link @ActiveClass(1)" @onclick="() => ShowPanel(1)">Input</a>
+	@if (Members.Any())
 	{
-		<DaySummary Model="Model"></DaySummary>
-		<Calender Model="Model" Month="@Month" Year="@Year"></Calender>
-		<DayList Model="Model"></DayList>
+		<a class="nav-item nav-link @ActiveClass(2)" @onclick="() => ShowPanel(2)">Calender</a>
+		<a class="nav-item nav-link @ActiveClass(3)" @onclick="() => ShowPanel(3)">List</a>
 	}
-</div>
+</nav>
+
+@if (ActivePanel == 1)
+{
+	<div class=" row">
+		<div class="input-group mb-3">
+			<span class="input-group-text">Year</span>
+			<InputNumber @bind-Value="Year" class="form-control" />
+			<span class="input-group-text">Month</span>
+			<InputNumber @bind-Value="Month" class="form-control" max="12" min="1" />
+		</div>
+	</div>
+	<MemberList Members="Members"></MemberList>
+	<button class="btn btn-primary" @onclick="Submit">Generate</button>
+}
+@if (Model.Days.Any())
+{
+	<div>
+		@if (ActivePanel == 2)
+		{
+			<DaySummary Model="Model"></DaySummary>
+			<Calender Model="Model" Month="@Month" Year="@Year"></Calender>
+		}
+	</div>
+}
+@if (ActivePanel == 3)
+{
+	<div>
+		<DayList Model="Model"></DayList>
+	</div>
+}
