@@ -16,5 +16,5 @@ public class WorkScheduleViewModel
 
     public string FirstColor => IsSelectFirst ? "bisque" : "";
 
-    public string SecondColor => IsSelectSecond ? "bisque" : "";
+    public string SecondColor => IsSelectSecond ? "plum" : "";
 }

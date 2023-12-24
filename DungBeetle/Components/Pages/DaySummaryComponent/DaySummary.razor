@@ -1,4 +1,5 @@
 ﻿@using DungBeetle.Applications.WorkSchedule
+@implements IDisposable
 <table class="table table-striped">
 	<thead>
 	<th>Name</th>
@@ -25,5 +26,15 @@
 
 	[Parameter]
 	public WorkDayViewModel Model { get; set; } = new();
+
+	protected override void OnInitialized()
+	{
+		Model.OnDataChanged += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		Model.OnDataChanged -= StateHasChanged;
+	}
 
 }

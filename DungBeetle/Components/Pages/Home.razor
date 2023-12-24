@@ -27,6 +27,6 @@
 	@if (Model.Days.Any())
 	{
 		<DaySummary Model="Model"></DaySummary>
-		<Calender Days="@Model.Days" Month="@Month" Year="@Year"></Calender>
+		<Calender DataChanged="Model.DataChanged" Days="Model.Days" Month="@Month" Year="@Year"></Calender>
 	}
 </div>

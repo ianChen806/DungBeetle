@@ -14,6 +14,9 @@ public class CalenderBase : ComponentBase
     [Parameter]
     public int Month { get; set; }
 
+    [Parameter]
+    public Action? DataChanged { get; set; }
+
     protected IEnumerable<IEnumerable<WorkScheduleViewModel>> Weeks()
     {
         var firstWeek = (int) new DateTime(Year, Month, 1).DayOfWeek;
@@ -26,39 +29,39 @@ public class CalenderBase : ComponentBase
             .Select(r => r.Select(x => x.Day));
     }
 
-    protected void SelectDay(WorkScheduleViewModel day, int number)
+    protected void SelectDayFirst(WorkScheduleViewModel day)
     {
-        if (number == 1)
+        day.IsSelectFirst = !day.IsSelectFirst;
+        if (Days.Count(d => d.IsSelectFirst) == 2)
         {
-            day.IsSelectFirst = !day.IsSelectFirst;
-            if (Days.Count(d => d.IsSelectFirst) == 2)
-            {
-                var first = Days.Find(r => r.IsSelectFirst)!;
-                var second = Days.FindLast(r => r.IsSelectFirst)!;
-                var firstName = first.First;
-                var secondName = second.First;
-                first.First = secondName;
-                second.First = firstName;
+            var first = Days.Find(r => r.IsSelectFirst)!;
+            var second = Days.FindLast(r => r.IsSelectFirst)!;
+            var firstName = first.First;
+            var secondName = second.First;
+            first.First = secondName;
+            second.First = firstName;
 
-                first.IsSelectFirst = false;
-                second.IsSelectFirst = false;
-            }
+            first.IsSelectFirst = false;
+            second.IsSelectFirst = false;
+            DataChanged?.Invoke();
         }
-        else
-        {
-            day.IsSelectSecond = !day.IsSelectSecond;
-            if (Days.Count(d => d.IsSelectSecond) == 2)
-            {
-                var first = Days.Find(r => r.IsSelectSecond)!;
-                var second = Days.FindLast(r => r.IsSelectSecond)!;
-                var firstName = first.Second;
-                var secondName = second.Second;
-                first.Second = secondName;
-                second.Second = firstName;
+    }
 
-                first.IsSelectSecond = false;
-                second.IsSelectSecond = false;
-            }
+    protected void SelectDaySecond(WorkScheduleViewModel day)
+    {
+        day.IsSelectSecond = !day.IsSelectSecond;
+        if (Days.Count(d => d.IsSelectSecond) == 2)
+        {
+            var first = Days.Find(r => r.IsSelectSecond)!;
+            var second = Days.FindLast(r => r.IsSelectSecond)!;
+            var firstName = first.Second;
+            var secondName = second.Second;
+            first.Second = secondName;
+            second.Second = firstName;
+
+            first.IsSelectSecond = false;
+            second.IsSelectSecond = false;
+            DataChanged?.Invoke();
         }
     }
 }
