@@ -54,4 +54,9 @@ public class MemberInputBase : ComponentBase
         FocusId = default;
         await base.OnAfterRenderAsync(firstRender);
     }
+
+    protected void Delete(MemberInfoViewModel member)
+    {
+        Members.Remove(member);
+    }
 }

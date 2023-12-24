@@ -27,18 +27,11 @@
 	{
 		<Calender Days="@Model.Days" Month="@Month" Year="@Year"></Calender>
 		<hr />
-		<span>
-			平日平均: @Model.WorkdayAvgDays
-		</span>
-		<br />
-		<span>
-			假日平均: @Model.HolidayAvgDays
-		</span>
 		<table class="table table-striped">
 			<thead>
 			<th>Name</th>
-			<th>主-平日</th>
-			<th>假日</th>
+			<th>主-平日(平均 @Model.WorkdayAvgDays)</th>
+			<th>假日(平均 @Model.HolidayAvgDays)</th>
 			<th>副-平日</th>
 			<th>假日</th>
 			</thead>

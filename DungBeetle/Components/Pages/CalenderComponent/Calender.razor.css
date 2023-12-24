@@ -12,3 +12,7 @@
 .calendar .empty {
     background-color: #f8f8f8;
 }
+
+.tdCol{
+    display: block;
+}

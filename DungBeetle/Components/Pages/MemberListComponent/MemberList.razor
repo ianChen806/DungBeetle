@@ -23,15 +23,22 @@
 			<th scope="col">#</th>
 			<th scope="col">Name</th>
 			<th scope="col">IgnoreDays</th>
+			<th scope="col">Control</th>
 		</tr>
 		</thead>
 		<tbody>
-		@foreach (var member in Members)
+		@{ var index = 1; }
+		@foreach (var member in Members.OrderBy(r => r.Name))
 		{
 			<tr>
-				<th scope="row">@(Members.IndexOf(member) + 1)</th>
+				<th scope="row">@(index++)</th>
 				<td>@member.Name</td>
-				<td>@string.Join(", ", member.IgnoreDays.Select(r => r))</td>
+				<td>
+					<input class="form-control" type="text" />
+				</td>
+				<td>
+					<button class="btn btn-danger" @onclick="() => Delete(member)">Delete</button>
+				</td>
 			</tr>
 		}
 		</tbody>
