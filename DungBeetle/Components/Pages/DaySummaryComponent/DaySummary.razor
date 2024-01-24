@@ -1,22 +1,35 @@
 ﻿@using DungBeetle.Applications.WorkSchedule
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @implements IDisposable
 <table class="table table-striped">
 	<thead>
-	<th>Name</th>
-	<th>主-平日(平均 @Model.WorkdayAvgDays)</th>
-	<th>假日(平均 @Model.HolidayAvgDays)</th>
-	<th>副-平日</th>
-	<th>假日</th>
+	<tr>
+		<th>平日:@Model.WorkdayAvgDays 假日:@Model.HolidayAvgDays</th>
+		<th colspan="3">主</th>
+		<th colspan="3">副</th>
+	</tr>
+	<tr>
+		<th>Name</th>
+		<th>平日</th>
+		<th>假日</th>
+		<th>Total</th>
+		<th>平日</th>
+		<th>假日</th>
+		<th>Total</th>
+	</tr>
 	</thead>
 	<tbody>
-	@foreach (var member in Model.Members)
+
+	@foreach (var member in Members)
 	{
 		<tr>
-			<td>@member</td>
-			<td>@Model.Days.Count(r => r.First == member && !r.IsHoliday)</td>
-			<td>@Model.Days.Count(r => r.First == member && r.IsHoliday)</td>
-			<td>@Model.Days.Count(r => r.Second == member && !r.IsHoliday)</td>
-			<td>@Model.Days.Count(r => r.Second == member && r.IsHoliday)</td>
+			<td>@member.Name</td>
+			<td style="background-color: @Color(AvgSummary.FirstWorkDay, member.FirstWorkDays)">@member.FirstWorkDays</td>
+			<td style="background-color: @Color(AvgSummary.FirstHoliday, member.FirstHolidayDays)">@member.FirstHolidayDays</td>
+			<td style="background-color: @Color(AvgSummary.FirstDay, member.FirstDays)">@member.FirstDays</td>
+			<td style="background-color: @Color(AvgSummary.SecondWorkDay, member.SecondWorkDays)">@member.SecondWorkDays</td>
+			<td style="background-color: @Color(AvgSummary.SecondHoliday, member.SecondHolidayDays)">@member.SecondHolidayDays</td>
+			<td style="background-color: @Color(AvgSummary.SecondDay, member.SecondDays)">@member.SecondDays</td>
 		</tr>
 	}
 	</tbody>
@@ -27,6 +40,28 @@
 	[Parameter]
 	public WorkDayViewModel Model { get; set; } = new();
 
+	private MaxDaySummary AvgSummary => new()
+	{
+		FirstHoliday = Members.MaxBy(r => r.FirstHolidayDays)?.FirstHolidayDays ?? 100,
+		FirstWorkDay = Members.MaxBy(r => r.FirstWorkDays)?.FirstWorkDays ?? 100,
+		SecondHoliday = Members.MaxBy(r => r.SecondHolidayDays)?.SecondHolidayDays ?? 100,
+		SecondWorkDay = Members.MaxBy(r => r.SecondWorkDays)?.SecondWorkDays ?? 100,
+		FirstDay = Members.MaxBy(r => r.FirstDays)?.FirstDays ?? 100,
+		SecondDay = Members.MaxBy(r => r.SecondDays)?.SecondDays ?? 100
+	};
+
+	private List<MemberDaySummary> Members => Model.Members.Select(s => new MemberDaySummary
+		{
+			Name = s,
+			FirstHolidayDays = Model.Days.Where(r => r.IsHoliday).Count(r => r.First == s),
+			FirstWorkDays = Model.Days.Where(r => !r.IsHoliday).Count(r => r.First == s),
+			SecondHolidayDays = Model.Days.Where(r => r.IsHoliday).Count(r => r.Second == s),
+			SecondWorkDays = Model.Days.Where(r => !r.IsHoliday).Count(r => r.Second == s),
+			FirstDays = Model.Days.Count(r => r.First == s),
+			SecondDays = Model.Days.Count(r => r.Second == s)
+		})
+		.ToList();
+
 	protected override void OnInitialized()
 	{
 		Model.OnDataChanged += StateHasChanged;
@@ -35,6 +70,11 @@
 	public void Dispose()
 	{
 		Model.OnDataChanged -= StateHasChanged;
+	}
+
+	private string Color(int max, int value)
+	{
+		return max - value > 1 ? "#dfc2c4" : "";
 	}
 
 }
