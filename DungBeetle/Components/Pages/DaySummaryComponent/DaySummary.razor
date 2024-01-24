@@ -74,6 +74,10 @@
 
 	private string Color(int max, int value)
 	{
+		if (max == value)
+		{
+			return "darkseagreen";
+		}
 		return max - value > 1 ? "#dfc2c4" : "";
 	}
 
