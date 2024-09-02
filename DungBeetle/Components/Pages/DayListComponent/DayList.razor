@@ -1,5 +1,9 @@
-﻿@using DungBeetle.Applications.WorkSchedule
+﻿@using System.Text
+@using DungBeetle.Applications.WorkSchedule
+@inject IJSRuntime JsRuntime
 @implements IDisposable
+
+<button class="btn btn-primary" @onclick="ExportIcs">Generate</button>
 <table class="table table-striped">
 	<thead>
 	<tr>
@@ -24,6 +28,17 @@
 	</tbody>
 </table>
 
+<script>
+	function saveFile(fileName, Content) {
+		var link = document.createElement('a');
+		link.download = fileName;
+		link.href = "data:text/plain;charset=utf-8," + encodeURIComponent(Content)
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+</script>
+
 @code {
 
 	[Parameter]
@@ -37,6 +52,36 @@
 	public void Dispose()
 	{
 		Model.OnDataChanged -= StateHasChanged;
+	}
+
+	private async Task ExportIcs()
+	{
+		var title = Model.Days.First().Date.ToString("yyyyMM");
+		var stringBuilder = new StringBuilder(
+			$@"BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Chimbori//CSV to iCal Convertor// https://csv-to-ical.chimbori.com/ //EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME;VALUE=TEXT:{title}");
+
+		foreach (var item in Model.Days)
+		{
+			var startDate = item.Date;
+			var endDate = item.Date.AddDays(1);
+			stringBuilder.Append(
+				$@"
+BEGIN:VEVENT
+SUMMARY:{item.First}/{item.Second}
+DTSTAMP:{startDate:yyyyMMdd}T000000
+DTSTART;VALUE=DATE:{startDate:yyyyMMdd}
+DTEND;VALUE=DATE:{endDate:yyyyMMdd}
+END:VEVENT");
+		}
+
+		stringBuilder.Append(@"
+END:VCALENDAR");
+
+		await JsRuntime.InvokeAsync<object>("saveFile", $"{title}.ics", stringBuilder.ToString());
 	}
 
 }
